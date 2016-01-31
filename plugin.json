@@ -1,0 +1,10 @@
+{
+    "id": "oss-auth",
+    "name": "Oss Auth",
+    "description": "Oss Auth link",
+    "url": "Absolute URL to your plugin or a Github repository",
+    "library": "./index.js",
+    "hooks": [
+        { "hook": "action:user.loggedIn", "method": "userConnect" }
+    ]
+}

@@ -1,0 +1,31 @@
+{
+  "name": "nodebb-plugin-oss-auth",
+  "version": "0.0.1",
+  "nbbpm": {
+    "compatibility": "^0.9.0"
+  },
+  "description": "Oss Auth Link for NodeBB",
+  "main": "theme.less",
+  "repository": {
+    "type": "git",
+    "url": "https://git.oss.rocks/oss/nodebb-plugin-oss-auth"
+  },
+  "keywords": [
+    "nodebb",
+    "theme",
+    "forum",
+    "bootstrap",
+    "responsive"
+  ],
+  "contributors": [
+    {
+      "name": "yohlane aka riukkie",
+      "email": "yohlana@gmail.com",
+      "url": ""
+    }
+  ],
+  "license": "BSD-2-Clause",
+  "bugs": {
+    "url": "https://git.oss.rocks/oss/nodebb-plugin-oss-auth/issues"
+  }
+}
