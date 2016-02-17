@@ -1,5 +1,5 @@
 (function() {
-	"use strict";
+	//"use strict";
 
 	var appId = "T7RZ3S7mWZdDBnA5R",
 	    appSecret = "aed17be2-8abe-4f27-817c-0bec928b1ccd",
@@ -8,6 +8,7 @@
 	var async = require('async'),
 	    groups = module.parent.require('./groups'),
 	    request = require('request'),
+	    nconf = module.parent.require('nconf'),
 	    user = module.parent.require('./user');
 
 	function loadUserGroups(userId, callback){
@@ -30,25 +31,32 @@
 							try{
 								var parsedJson = JSON.parse(body);
 								//console.log(parsedJson);
+								
+								//user.updateProfile(userId, {username: parsedJson.data.username});
 
-								var roles = parsedJson.data.rolesNormalized
+								var roles = parsedJson.data.rolesNormalized;
 
 								function forEachRole(element, index, array){
 									//console.log('Role ' + element);
 									try{
+										var groupExists=false;
 										async.waterfall([
 											// Create group is not exists
 											function (next) {
 												groups.exists(element, function(err,data){
-													if(data || true){
+													if(data){
 														//console.log("[OssAuth] - " + element + " exists");
+														if (data) groupExists=true;
 														next()
 													}
 													else{
 														//console.log("[OssAuth] - " + element + " doesn't exist");
+														groupExists=true;
 														groups.create({
 															"name":element, 
-															"description":"auth group"
+															"description":"auth group",
+															"hidden": 1,
+															"private": 1
 														}, next);
 													}
 												});
@@ -56,10 +64,14 @@
 											// Join group if not already in
 											function (next) {
 												try{
-													groups.isMember(userId,element,function(err, data){
-														if(!data)
-															groups.join(element, userId);
-													});
+												        if (element==="OMEGA.Admin") {
+												                groups.join("administrators", userId);
+												        } else {
+													        groups.isMember(userId,element,function(err, data){
+													        	if(!data && groupExists)
+													        		groups.join(element, userId);
+                                                                                                                });
+                                                                                                        }
 												}
 												catch(err) {
 													console.log("[OssAuth] - Role " + element + " join error: " + err);
@@ -109,6 +121,7 @@
 
 	var OssAuth = {
 		appLoad: function(params, callback) {
+		        app=params.router;
 			function getToken(req, res, next){
 				if(req.uid > 0){
 					user.setUserField(req.uid, "authToken", req.params.token);
@@ -117,7 +130,7 @@
 				res.redirect("/");
 			}
 			function goToAuth(req, res, next){
-				res.redirect("https://auth.oss.rocks/authorize/" + appId + "?r=http://oss.yohann-gely.com/token/");
+				res.redirect("https://auth.oss.rocks/authorize/" + appId + "?r="+nconf.get('url')+"/token/");
 			}
 
 			//console.log("[OssAuth] - appLoad");
