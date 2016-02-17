@@ -6,7 +6,6 @@
     "library": "./index.js",
     "hooks": [
         { "hook": "static:app.load", "method": "appLoad" }, 
-        { "hook": "action:user.loggedIn", "method": "userConnect" },
-		{ "hook": "filter:user.getSettings", "method": "userAccount" }
+        { "hook": "action:user.loggedIn", "method": "userConnect" }
     ]
 }
