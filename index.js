@@ -15,9 +15,10 @@
 		user.getUserData(userId,function(err,data){
 			if (data.hasOwnProperty('authToken')){
 				//console.log("[OssAuth] - data.authToken: " + data.authToken);
+
 				request({
 					headers: {
-						"Authorization": "0e788543-f070-4ba9-a841-82ea7a1a386c",
+						"Authorization": data.authToken,
 						"X-App-Id": appId,
 						"X-App-Secret": appSecret,
 						"X-Scopes": "Roles"
@@ -113,7 +114,7 @@
 				res.redirect("https://auth.oss.rocks/authorize/" + appId + "?r=http://oss.yohann-gely.com/token/");
 			}
 
-			console.log("[OssAuth] - appLoad");
+			//console.log("[OssAuth] - appLoad");
 			params.router.get('/token/:token', getToken);
 			params.router.get('/token/', goToAuth);
 			callback();
