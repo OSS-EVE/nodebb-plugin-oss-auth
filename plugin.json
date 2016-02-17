@@ -5,7 +5,8 @@
     "url": "Absolute URL to your plugin or a Github repository",
     "library": "./index.js",
     "hooks": [
-        { "hook": "static:app.load", "method": "appLoad" }, 
-        { "hook": "action:user.loggedIn", "method": "userConnect" }
+        { "hook": "static:app.load", "method": "appLoad" },
+        { "hook": "action:user.loggedIn", "method": "userConnect" },
+        { "hook": "filter:topics.get", "method": "rolesCheck", "callbacked": false }
     ]
 }
