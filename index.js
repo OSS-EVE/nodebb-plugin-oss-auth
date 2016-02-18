@@ -34,7 +34,7 @@
 								
 								//user.updateProfile(userId, {username: parsedJson.data.username});
 
-								var roles = parsedJson.data.rolesNormalized;
+								var roles = parsedJson.data.rolesNormalized.concat(parsedJson.data.globalRolesNormalized);
 
 								function forEachRole(element, index, array){
 									//console.log('Role ' + element);
