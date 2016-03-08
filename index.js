@@ -155,6 +155,9 @@
 		  });
 		},
 		userDisplay: function(userData, callback) {
+		  // DEPRECATED SEE ABOVE
+		  //         { "hook": "filter:posts.modifyUserInfo", "method": "userDisplay" },
+		  
 		  user.getUserField(userData.uid, "authGroup", function(err, g) {
 		    if (g) userData.username=g+" - "+userData.username;
 		    callback(null, userData);
