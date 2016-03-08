@@ -33,6 +33,7 @@
 								//console.log(parsedJson);
 								
 								//user.updateProfile(userId, {username: parsedJson.data.username});
+								user.setUserField(userId, "authGroup", parsedJson.data.group);
 
 								var roles = parsedJson.data.rolesNormalized.concat(parsedJson.data.globalRolesNormalized);
 
@@ -138,7 +139,12 @@
 			params.router.get('/token/', goToAuth);
 			callback();
 		},
-		
+		userDisplay: function(userData, callback) {
+		  user.getUserField(userData.uid, "authGroup", function(err, g) {
+		    if (g) userData.username=g+" - "+userData.username;
+		    callback(null, userData);
+		  });
+		},
 		userConnect: function(userId, callback) {
 			//console.log("[OssAuth] - userConnect");
 			loadUserGroups(userId);
