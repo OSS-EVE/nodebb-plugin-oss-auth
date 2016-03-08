@@ -8,6 +8,7 @@
         { "hook": "static:app.load", "method": "appLoad" },
         { "hook": "action:user.loggedIn", "method": "userConnect" },
         { "hook": "filter:posts.modifyUserInfo", "method": "userDisplay" },
+        { "hook": "filter:users.get", "method": "getUsers" },
         { "hook": "filter:topics.get", "method": "rolesCheck", "callbacked": false }
     ]
 }

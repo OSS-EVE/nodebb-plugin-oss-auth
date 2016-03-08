@@ -139,6 +139,21 @@
 			params.router.get('/token/', goToAuth);
 			callback();
 		},
+		getUsers: function(users, callback) {
+		  async.each(users, function(u, cb) {
+		    if (u.username && u.uid) {
+		      user.getUserField(u.uid, "authGroup", function(err, g) {
+		        if (g) u.username=g+" - "+u.username;
+		        cb();
+		      });
+		    } else {
+		      cb();
+		    }
+		  },
+		  function(err) {
+		    callback(null, users);
+		  });
+		},
 		userDisplay: function(userData, callback) {
 		  user.getUserField(userData.uid, "authGroup", function(err, g) {
 		    if (g) userData.username=g+" - "+userData.username;
