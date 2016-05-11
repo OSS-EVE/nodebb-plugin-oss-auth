@@ -31,11 +31,16 @@
 							try{
 								var parsedJson = JSON.parse(body);
 								//console.log(parsedJson);
+								//if (userId==596) console.log(parsedJson);
 								
 								//user.updateProfile(userId, {username: parsedJson.data.username});
 								user.setUserField(userId, "authGroup", parsedJson.data.group);
-
-								var roles = parsedJson.data.rolesNormalized.concat(parsedJson.data.globalRolesNormalized);
+								
+								if (parsedJson.data && parsedJson.data.globalRolesNormalized && parsedJson.data.rolesNormalized) { 
+								  var roles = parsedJson.data.rolesNormalized.concat(parsedJson.data.globalRolesNormalized);
+								} else {
+								  var roles=[];
+								}
 
 								function forEachRole(element, index, array){
 									//console.log('Role ' + element);
@@ -73,6 +78,7 @@
 													        		groups.join(element, userId);
                                                                                                                 });
                                                                                                         }
+                                                                                                        user.setUserField(userId, "nextAuthCheck", new Date(new Date().getTime()+checkFrequency*1000));
 												}
 												catch(err) {
 													console.log("[OssAuth] - Role " + element + " join error: " + err);
@@ -109,11 +115,11 @@
 								]);
 							}
 							catch(err) {
-								console.log("[OssAuth] - Parse Json error: "+ err);
+								console.log(new Date(), userId, "[OssAuth] - Parse Json error: "+ err);
 							}
 						}
 						else
-							console.log("[OssAuth] - auth request error " + err);
+							console.log(new Date(), userId, "[OssAuth] - auth request error " + err);
 					}
 				);
 			}
@@ -181,7 +187,6 @@
 						else if(new Date(data.nextAuthCheck) < new Date(new Date().getTime())){
 							//console.log("[OssAuth] - rolesChecked");
 							loadUserGroups(params.uid);
-							user.setUserField(params.uid, "nextAuthCheck", new Date(new Date().getTime()+checkFrequency*1000));
 						}
 					}
 				});
